@@ -187,8 +187,8 @@ class REFER:
                 else:
                     print('No such split [%s]' % split)
                     sys.exit()
-        ref_ids = [ref['ref_id'] for ref in refs]
-        return ref_ids
+        # ref_ids = [ref['ref_id'] for ref in refs]
+        return refs
 
     def get_ann_ids(self, image_ids=[], cat_ids=[], ref_ids=[]):
         image_ids = image_ids if type(image_ids) == list else [image_ids]
@@ -219,11 +219,11 @@ class REFER:
             image_ids = list(set(
                 [self.refs[ref_id]['image_id'] for ref_id in ref_ids]))
         else:
-            image_ids = self.imgs.keys()
+            image_ids = list(self.imgs.keys())
         return image_ids
 
     def get_cat_ids(self):
-        return self.cats.keys()
+        return list(self.cats.keys())
 
     def load_refs(self, ref_ids=[]):
         if isinstance(ref_ids, list):
@@ -272,7 +272,7 @@ class REFER:
             if type(ann['segmentation'][0]) == list:
                 # polygon used for refcoco*
                 for seg in ann['segmentation']:
-                    poly = np.array(seg).reshape((len(seg) / 2, 2))
+                    poly = np.array(seg).reshape(int((len(seg)) / 2, 2))
                     polygons.append(Polygon(poly, True, alpha=0.4))
                     color.append(c)
                 p = PatchCollection(
